@@ -27,28 +27,28 @@ namespace sfld {
 
 	template<typename T>
 	Vector2<T>::Vector2() {
-		x = 0;
-		y = 0;
+		this->x = 0;
+		this->y = 0;
 	}
 
 	template<typename T>
 	Vector2<T>::Vector2(T X, T Y) {
-		x = X;
+		this->x = X;
 		y = Y;
 	}
 
 	template<typename T>
 	Vector2<T>::Vector2(const sf::Vector2<T>& vector) {
-		x = vector.x;
-		y = vector.y;
+		this->x = vector.x;
+		this->y = vector.y;
 	}
 
 	template<typename T>
 	Vector2<T> Vector2<T>::rotate(float degrees) {
 		float radians = maths::toRadians(degrees);
 		Vector2<T> rotated;
-		rotated.x = x * cos(angle) + y * sin(angle);
-		rotated.y = -point.x * sin(angle) + point.y * cos(angle);
+		rotated.x = x * cos(radians) + y * sin(radians);
+		rotated.y = -point.x * sin(radians) + point.y * cos(radians);
 		return rotated;
 	}
 
@@ -64,24 +64,24 @@ namespace sfld {
 
 	template<typename T>
 	float Vector2<T>::dot(const Vector2<T>& other) const {
-		return (x * other.x) + (y * other.y);
+		return (this->x * other.x) + (this->y * other.y);
 	}
 
 	template<typename T>
 	Vector2<T> Vector2<T>::normalise() const {
 		float len = length();
 		if (len == 0) return Vector2<T>(0, 0);
-		return Vector2<T>(x / len, y / len);
+		return Vector2<T>(this->x / len, this->y / len);
 	}
 
 	template<typename T>
 	float Vector2<T>::length() const {
-		return sqrt(x*x + y*y);
+		return sqrt(this->x*this->x + this->y*this->y);
 	}
 
 	template<typename T>
 	Vector2<T> Vector2<T>::perpendicular() const {
-		return Vector2<T>(-y, x);
+		return Vector2<T>(-this->y, this->x);
 	}
 
 	template<typename T>
@@ -91,6 +91,6 @@ namespace sfld {
 
 	template<typename T>
 	Vector2<T> Vector2<T>::negate() const {
-		return Vector2<T>(-x, -y);
+		return Vector2<T>(-this->x, -this->y);
 	}
 }
