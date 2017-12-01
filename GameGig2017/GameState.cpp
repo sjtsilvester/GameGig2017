@@ -50,8 +50,7 @@ void GameState::start() {
 	rm_.load("goomba", "goomba.png");
 	rm_.load("pacFood", "pacFood.png");
 
-	sm = SoundManager();
-	sm.add("jump", "media/sound/Jump.wav");
+	SoundManager::add("jump", "media/sound/Jump.wav");
 
 	entity_manager_ = std::unique_ptr<EntityManager>(new EntityManager());
 	world_manager_ = std::unique_ptr<WorldManager>(new WorldManager(entity_manager_.get()));

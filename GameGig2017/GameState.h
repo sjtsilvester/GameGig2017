@@ -35,7 +35,6 @@ private:
 
 
 	ResourceManager<sf::Texture, std::string> rm_;
-    SoundManager sm;
 
 	Entity* player;
 
