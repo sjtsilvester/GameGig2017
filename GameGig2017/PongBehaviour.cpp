@@ -4,17 +4,15 @@
 #include "PongBehaviour.h"
 #include "Entity.h"
 
-
-
-	PongBehaviour::PongBehaviour(ResourceManager<sf::Texture, std::string>* rm)
+PongBehaviour::PongBehaviour(ResourceManager<sf::Texture, std::string>* rm)
 {
-	resourceManager = rm;
-	speed = 0.2;
-	setVelocity(sfld::Vector2f(0, speed));
+resourceManager = rm;
+speed = 0.2;
+setVelocity(sfld::Vector2f(0, speed));
 
-	// initialise sprite
-	paintSprite();
-	sprite.setOrigin(16, 16);
+// initialise sprite
+paintSprite();
+sprite.setOrigin(16, 16);
 }
 
 
