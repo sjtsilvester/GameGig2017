@@ -6,14 +6,32 @@
 #include "StaticBehaviour.h"
 #include "PacManBehaviour.h"
 #include "WorldManager.h"
+#include "MarioBehaviour.h"
+#include "PongBehaviour.h"
+#include "BulletBehaviour.h"
+#include "ShooterBehaviour.h"
 
 #include <iostream>
 #include <fstream>  
 
+#include "SoundManager.h"
+
 GameState::GameState() {}
 GameState::~GameState() {}
 
-void GameState::sfmlEvent(sf::Event evt) {}
+void GameState::sfmlEvent(sf::Event evt) {
+	if (evt.type == sf::Event::KeyPressed) {
+		if (evt.key.code == sf::Keyboard::I) {
+			player->setBehaviour(Behaviour::BEHAVIOUR_PONG);
+		}
+		else if (evt.key.code == sf::Keyboard::O) {
+			player->setBehaviour(Behaviour::BEHAVIOUR_MARIO);
+		}
+		else if (evt.key.code == sf::Keyboard::P) {
+			player->setBehaviour(Behaviour::BEHAVIOUR_PACMAN);
+		}
+	}
+}
 
 
 void GameState::start() {
@@ -22,25 +40,35 @@ void GameState::start() {
 	rm_.load("demo", "demo.png");
 	rm_.load("wall", "wall.png");
 	rm_.load("pacman", "pacman.png");
+	rm_.load("pong", "pong.png");
+	rm_.load("shooter", "demo.png");
+	rm_.load("bullet", "bullet.png");
+
 
 	entity_manager_ = std::unique_ptr<EntityManager>(new EntityManager());
 	world_manager_ = std::unique_ptr<WorldManager>(new WorldManager(entity_manager_.get()));
 
 	BehaviourMap* player_map = new BehaviourMap();
-	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_TEST,
-		std::unique_ptr<Behaviour>(new DemoBehaviour(&rm_))));
 	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_PACMAN,
 		std::unique_ptr<Behaviour>(new PacManBehaviour(&rm_))));
+	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_MARIO,
+		std::unique_ptr<Behaviour>(new MarioBehaviour(&rm_))));
+	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_PONG,
+		std::unique_ptr<Behaviour>(new PongBehaviour(&rm_))));
 
-	entity_manager_->add(new Entity(
+	player = new Entity(
 		player_map,
 		entity_manager_.get(),
 		sfld::Vector2f(200, 200),
-		"player",
-		Behaviour::BEHAVIOUR_PACMAN,
+		Behaviour::BEHAVIOUR_PONG,
 		Entity::DYNAMIC_MOVING,
-		false)
+		false
 	);
+
+	entity_manager_->add(player);
+
+	createShooter(1000, 500);
+	createShooter(2000, 200);
 
 	load("testlevel.png");
 }
@@ -54,12 +82,45 @@ void GameState::createWall(int t, int y) {
 		wall_map,
 		entity_manager_.get(),
 		sfld::Vector2f(0, 0),
-		"wall",
 		Behaviour::BEHAVIOUR_STATIC,
 		Entity::DYNAMIC_STATIC,
 		true), y
 	);
 }
+
+void GameState::createShooter(int t, int y) {
+	BehaviourMap* wall_map = new BehaviourMap();
+	wall_map->insert(std::make_pair(Behaviour::BEHAVIOUR_SHOOTER,
+		std::unique_ptr<Behaviour>(new ShooterBehaviour(&rm_, player, this))));
+
+	world_manager_->addEntity(t, new Entity(
+		wall_map,
+		entity_manager_.get(),
+		sfld::Vector2f(0, 0),
+		Behaviour::BEHAVIOUR_SHOOTER,
+		Entity::DYNAMIC_MOVING,
+		true), y
+	);
+}
+
+
+void GameState::createBullet(sfld::Vector2f velocity, sfld::Vector2f position) {
+	BehaviourMap* bullet_map = new BehaviourMap();
+	bullet_map->insert(std::make_pair(Behaviour::BEHAVIOUR_BULLET,
+		std::unique_ptr<Behaviour>(new BulletBehaviour(&rm_, player))));
+
+	Entity* b = new Entity(
+		bullet_map,
+		entity_manager_.get(),
+		position + 40.0f*velocity.normalise(),
+		Behaviour::BEHAVIOUR_BULLET,
+		Entity::DYNAMIC_MOVING,
+		false);
+	b->setVelocity(velocity);
+	entity_manager_->add(b);
+
+}
+
 
 void GameState::pause() {}
 void GameState::resume() {}

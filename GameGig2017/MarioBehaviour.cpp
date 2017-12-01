@@ -18,6 +18,8 @@ void MarioBehaviour::collided(Entity *other, MTV v){
     }
 }
 
+void MarioBehaviour::sfmlEvent(sf::Event evt) {}
+
 MarioBehaviour::~MarioBehaviour() {}
 
 void MarioBehaviour::update(int frame_time) {

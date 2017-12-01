@@ -6,14 +6,12 @@ const float Entity::scroll = 0.1f;
 Entity::Entity(BehaviourMap* behaviour_map,
 	EntityManager* entity_manager,
 	sfld::Vector2f position,
-	std::string type,
 	Behaviour::BEHAVIOUR_TYPE behaviour,
 	ENTITY_DYNAMICS dynamic,
 	bool scrolling
 	) :
 	is_destroyed_(is_destroyed_),
 	entity_manager_(entity_manager),
-	type_(type),
 	dynamic_(dynamic),
 	scrolling_(scrolling){
 
@@ -58,8 +56,33 @@ void Entity::setVelocity(sfld::Vector2f velocity) {
 
 void Entity::setBehaviour(Behaviour::BEHAVIOUR_TYPE type) {
 	current_behaviour_ = behaviour_map_->at(type).get();
+	current_behaviour_->setEntity(this);
 	setPosition(getPosition()); //refresh position for new sprite
 	getSprite()->setRotation(0);
+	if (type == Behaviour::BEHAVIOUR_PACMAN) {
+		type_ = "pacman";
+	}
+	else if (type == Behaviour::BEHAVIOUR_BULLET) {
+		type_ = "bullet";
+	}
+	else if (type == Behaviour::BEHAVIOUR_GHOST) {
+		type_ = "ghost";
+	}
+	else if (type == Behaviour::BEHAVIOUR_GOOMBA) {
+		type_ = "goomba";
+	}
+	else if (type == Behaviour::BEHAVIOUR_MARIO) {
+		type_ = "mario";
+	}
+	else if (type == Behaviour::BEHAVIOUR_PACMAN) {
+		type_ = "pacman";
+	}
+	else if (type == Behaviour::BEHAVIOUR_PONG) {
+		type_ = "pong";
+	}
+	else if (type == Behaviour::BEHAVIOUR_SHOOTER) {
+		type_ = "shooter";
+	}
 }
 
 void Entity::takeDamage(int damage) {
@@ -118,7 +141,7 @@ void Entity::move(sfld::Vector2f velocity, int frame_time) {
 	for (auto& it : *list) {
 		if (it.get() != this) {
 			float dist = sfld::Vector2f(it->getPosition() - getPosition()).length();
-			if (dist <= TILE_SIZE*1.5f) { //need accurate collisions here
+			if (dist <= TILE_SIZE*3.0f) { //need accurate collisions here
 				MTV mtv(Collision::getCollision(*getSprite(), current_behaviour_->getShape(), *it->getSprite(), it->current_behaviour_->getShape()));
 				if (!(mtv.axis == MTV::NONE.axis && mtv.overlap == MTV::NONE.overlap)) {
 					//collided

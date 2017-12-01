@@ -28,7 +28,7 @@ void PacManBehaviour::collided(Entity* other, MTV v){
 		other->takeDamage(1000);
 		isFlashing = true;
 	}
-	else if (other->getType() == "Goomba") {
+	else if (other->getType() == "goomba") {
 		takeDamage(10);
 		isFlashing = true;
 	}

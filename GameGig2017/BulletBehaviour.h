@@ -12,7 +12,7 @@ class BulletBehaviour : public Behaviour {
 	ENTITY_SHAPE shape_;
 	Entity* entity_;
 public:
-	BulletBehaviour(ResourceManager<sf::Texture, std::string>* rm);
+	BulletBehaviour(ResourceManager<sf::Texture, std::string>* rm, Entity* player);
 	~BulletBehaviour();
 	void collided(Entity* other, MTV v);
 	void update(int frame_time);
@@ -20,6 +20,8 @@ public:
 
 	void paintSprite();
 	void sfmlEvent(sf::Event e);
+
+	Entity* player;
 
 	sf::Sprite* getSprite();
 };
