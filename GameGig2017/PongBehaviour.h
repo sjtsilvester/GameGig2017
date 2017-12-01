@@ -3,12 +3,14 @@
 #include "stdafx.h"
 #include "Collision.h"
 #include "ResourceManager.h"
-#include "PongBehaviour.h"
+#include "Behaviour.h"
 
-class PongBehaviour {
-	ResourceManager<sf::Texture, std::string> resourceManager;
+class Entity;
+
+class PongBehaviour : public Behaviour{
+	ResourceManager<sf::Texture, std::string>* resourceManager;
 	sf::Sprite sprite;
-	sfld::Vector2f velocity;
+	float speed;
 
 public:  
 	PongBehaviour(ResourceManager<sf::Texture, std::string>* rm);
@@ -17,4 +19,5 @@ public:
 	void update(int frame_time); // has logic and physics
 	void render(sf::RenderTarget* target); //Usage: target->draw(sprite)
 	sf::Sprite* getSprite();
+	void paintSprite();
 };
