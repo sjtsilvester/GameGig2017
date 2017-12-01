@@ -11,13 +11,9 @@ class PacManBehaviour : public Behaviour{
 		float speed;
 		
 		sf::Sprite sprite;
-		int flash; 	/*
-					works both as a flag and a counter
-					lifecycle: set 0 in contructor
-								set 1 in collided
-								incremented by update
-								set back to 0 when it reaches 5 (depending on the desired rate of flashing effect)
-					*/
+		bool isFlashing;
+		int endFlash;
+
 	public:
 		PacManBehaviour(ResourceManager<sf::Texture, std::string>* rm);
 		void collided(Entity* other, MTV v);
