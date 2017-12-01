@@ -37,6 +37,10 @@ void PongBehaviour::collided(Entity* other, MTV v)
 	else if (other->getType() == "goomba") {
 		takeDamage(10);
 	}
+	else if (other->getType() == "static") {
+		takeDamage(10);
+		other->takeDamage(1000);
+	}
 }
 
 void PongBehaviour::update(int frame_time)

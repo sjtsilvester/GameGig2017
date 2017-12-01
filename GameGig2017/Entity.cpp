@@ -91,6 +91,9 @@ void Entity::setBehaviour(Behaviour::BEHAVIOUR_TYPE type) {
 	else if (type == Behaviour::BEHAVIOUR_FOOD) {
 		type_ = "food";
 	}
+	else if (type == Behaviour::BEHAVIOUR_STATIC) {
+		type_ = "static";
+	}
 }
 
 void Entity::takeDamage(int damage) {
