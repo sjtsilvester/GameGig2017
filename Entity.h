@@ -21,7 +21,8 @@ public:
 		sfld::Vector2f position,
 		std::string type,
 		Behaviour::BEHAVIOUR_TYPE behaviour,
-		ENTITY_DYNAMICS dynamic
+		ENTITY_DYNAMICS dynamic,
+		bool scrolling
 	);
 
 	void collided(Entity* other, MTV v);
@@ -44,6 +45,7 @@ public:
 	void setDynamic(ENTITY_DYNAMICS dynamic);
 	std::string getType() const;
 
+	static const float scroll;
 private:
 	void doOffset(sfld::Vector2f offset);
 	void setBehaviour(Behaviour::BEHAVIOUR_TYPE type);
@@ -61,4 +63,6 @@ private:
 
 	EntityManager* entity_manager_;
 	ENTITY_DYNAMICS dynamic_;
+
+	bool scrolling_;
 };

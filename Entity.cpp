@@ -1,17 +1,21 @@
 #include "Entity.h"
 #include "EntityManager.h"
 
+const float Entity::scroll = 0.1f;
+
 Entity::Entity(BehaviourMap* behaviour_map,
 	EntityManager* entity_manager,
 	sfld::Vector2f position,
 	std::string type,
 	Behaviour::BEHAVIOUR_TYPE behaviour,
-	ENTITY_DYNAMICS dynamic
+	ENTITY_DYNAMICS dynamic,
+	bool scrolling
 	) :
 	is_destroyed_(is_destroyed_),
 	entity_manager_(entity_manager),
 	type_(type),
-	dynamic_(dynamic){
+	dynamic_(dynamic),
+	scrolling_(scrolling){
 
 	behaviour_map_ = std::unique_ptr<BehaviourMap>(behaviour_map);
 
@@ -29,7 +33,12 @@ std::string Entity::getType() const {
 
 void Entity::update(int frame_time) {
 	current_behaviour_->update(frame_time);
-	move(getVelocity(), frame_time);
+	if (dynamic_ == DYNAMIC_MOVING) {
+		move(getVelocity(), frame_time);
+	}
+	else {
+		doOffset(sfld::Vector2f(-1,0)*(float)scroll*(float)frame_time);
+	}
 }
 
 void Entity::render(sf::RenderTarget* target) {
@@ -81,6 +90,9 @@ void Entity::setDynamic(ENTITY_DYNAMICS dynamic) {
 
 void Entity::move(sfld::Vector2f velocity, int frame_time) {
 	EntityList* list = entity_manager_->getEntities();
+	if (scrolling_) {
+		velocity -= sfld::Vector2f(scroll, 0);
+	}
 	sfld::Vector2f direction = velocity.normalise();
 	double mag = velocity.length();
 	for (auto& it : *list) {
