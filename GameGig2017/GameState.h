@@ -7,6 +7,7 @@
 class EntityManager;
 class WorldManager;
 class Entity;
+class ParticleEngine;
 
 class GameState : public BaseState {
 public:
@@ -39,4 +40,5 @@ private:
 
 	std::unique_ptr<WorldManager> world_manager_;
 	std::unique_ptr<EntityManager> entity_manager_;
+	std::unique_ptr<ParticleEngine> particle_manager_;
 };
