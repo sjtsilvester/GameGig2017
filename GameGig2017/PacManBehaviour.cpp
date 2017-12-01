@@ -32,15 +32,19 @@ void PacManBehaviour::collided(Entity* other, MTV v){
 void PacManBehaviour::update(double frame_time) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		setVelocity(sfld::Vector2f(0, speed));
+		sprite.setRotation(270);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		setVelocity(sfld::Vector2f(-speed, 0));
+		sprite.setRotation(180);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 		setVelocity(sfld::Vector2f(0, -speed));
+		sprite.setRotation(90);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		setVelocity(sfld::Vector2f(speed, 0));
+		sprite.setRotation(0);
 	}
 	else {
 
