@@ -4,7 +4,6 @@
 #include "PacManBehaviour.h"
 #include "Entity.h"
 
-
 //You will want to save rm to a private variable. To get a texture: rm->get("texture name"); We will load textures later.
 PacManBehaviour::PacManBehaviour(ResourceManager<sf::Texture, std::string>* rm) {
 	resourceManager = rm;
@@ -13,16 +12,20 @@ PacManBehaviour::PacManBehaviour(ResourceManager<sf::Texture, std::string>* rm) 
 
 	//initialise sprite
 	paintSprite();
-	flash = 0;
+	isFlashing = false;
+	endFlash = 500;
 	sprite.setOrigin(16, 16);
 }
 
 void PacManBehaviour::sfmlEvent(sf::Event evt) {}
 
 void PacManBehaviour::collided(Entity* other, MTV v){
-	if (other->getType() == "normal ghost") {
+	if (other->getType() == "wall") {
+		isFlashing = true;
+	}
+	else if (other->getType() == "normal ghost") {
 		takeDamage(10);
-		flash = 1;
+		isFlashing = true;
 	}
 	else if (other->getType() == "vulnerable ghost") {
 		other->takeDamage(1000);
@@ -31,7 +34,7 @@ void PacManBehaviour::collided(Entity* other, MTV v){
 
 void PacManBehaviour::update(int frame_time) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		setVelocity(sfld::Vector2f(0, speed));
+		setVelocity(sfld::Vector2f(0, -speed));
 		sprite.setRotation(270);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
@@ -39,7 +42,7 @@ void PacManBehaviour::update(int frame_time) {
 		sprite.setRotation(180);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		setVelocity(sfld::Vector2f(0, -speed));
+		setVelocity(sfld::Vector2f(0, speed));
 		sprite.setRotation(90);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
@@ -47,18 +50,19 @@ void PacManBehaviour::update(int frame_time) {
 		sprite.setRotation(0);
 	}
 
-	if (flash > 0) {
-		if (flash == 300) {
-			flash = 0;
+	if (isFlashing) {
+		if (endFlash == 0) {
+			isFlashing = false;
+			endFlash = 500;			
+			sprite.setColor(sf::Color(255, 255, 255));
+		}
+		else if (endFlash % 100 < 50) {
+			sprite.setColor(sf::Color(255, 0, 0));
+			endFlash--;
 		}
 		else {
-			flash++;
-			if (flash % 20 == 1) {
-				sprite.setColor(sf::Color(255, 0, 0));
-			}
-			else if (flash % 20 == 0) {
-				sprite.setColor(sf::Color(0, 0, 0));
-			}
+			sprite.setColor(sf::Color(255, 255, 255));
+			endFlash--;
 		}
 	}
 

@@ -6,6 +6,9 @@
 #include "StaticBehaviour.h"
 #include "PacManBehaviour.h"
 
+#include <iostream>
+#include <fstream>  
+
 GameState::GameState() {}
 GameState::~GameState() {}
 
@@ -13,6 +16,7 @@ void GameState::sfmlEvent(sf::Event evt) {}
 
 
 void GameState::start() {
+
 	rm_.setDirectory("media/images/");
 	rm_.load("demo", "demo.png");
 	rm_.load("wall", "wall.png");
