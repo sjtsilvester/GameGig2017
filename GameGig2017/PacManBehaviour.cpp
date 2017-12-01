@@ -2,19 +2,21 @@
 #include "Collision.h"
 #include "ResourceManager.h"
 #include "PacManBehaviour.h"
+#include "Entity.h"
 
 
 //You will want to save rm to a private variable. To get a texture: rm->get("texture name"); We will load textures later.
 PacManBehaviour::PacManBehaviour(ResourceManager<sf::Texture, std::string>* rm) {
 	resourceManager = rm;
-	speed = 10.0;
+	speed = 0.2;
 	setVelocity(sfld::Vector2f(speed, 0));
 
 	//initialise sprite
-	sf::Texture texture = resourceManager->get("Pacman");
-	paintSprite(texture);
+	paintSprite();
 	flash = 0;
 }
+
+void PacManBehaviour::sfmlEvent(sf::Event evt) {}
 
 void PacManBehaviour::collided(Entity* other, MTV v){
 	if (other->getType() == "wall"){
@@ -25,11 +27,11 @@ void PacManBehaviour::collided(Entity* other, MTV v){
 		flash = 1;
 	}
 	else if (other->getType() == "vulnerable ghost") {
-		other->die();
+		other->takeDamage(1000);
 	}
 }
 
-void PacManBehaviour::update(double frame_time) {
+void PacManBehaviour::update(int frame_time) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		setVelocity(sfld::Vector2f(0, speed));
 		sprite.setRotation(270);
@@ -45,9 +47,6 @@ void PacManBehaviour::update(double frame_time) {
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		setVelocity(sfld::Vector2f(speed, 0));
 		sprite.setRotation(0);
-	}
-	else {
-
 	}
 
 	if (flash > 0) {
@@ -69,13 +68,11 @@ void PacManBehaviour::update(double frame_time) {
 
 //Usage: target->draw(sprite)
 void PacManBehaviour::render(sf::RenderTarget* target) {
-	sf::Sprite *spr = getSprite();
 	target->draw(sprite);
 }
 
-void PacManBehaviour::paintSprite(sf::Texture texture) {
-	texture.setSmooth(true);
-	sprite.setTexture(texture);
+void PacManBehaviour::paintSprite() {
+	sprite.setTexture(resourceManager->get("pacman"));
 }
 
 sf::Sprite* PacManBehaviour::getSprite() {

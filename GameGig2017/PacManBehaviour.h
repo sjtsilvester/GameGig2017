@@ -1,10 +1,11 @@
 #pragma once
-#include "stdafx.h"
 #include "Collision.h"
 #include "ResourceManager.h"
+#include "Behaviour.h"
 
+class Entity;
 
-class PacManBehaviour {
+class PacManBehaviour : public Behaviour{
 	private:
 		ResourceManager<sf::Texture, std::string>* resourceManager;
 		float speed;
@@ -20,10 +21,11 @@ class PacManBehaviour {
 	public:
 		PacManBehaviour(ResourceManager<sf::Texture, std::string>* rm);
 		void collided(Entity* other, MTV v);
-		void update(double frame_time);
+		void update(int frame_time);
 		void render(sf::RenderTarget* target); //Usage: target->draw(sprite)
+		void sfmlEvent(sf::Event evt);
 
-		void paintSprite(sf::Texture texture);
+		void paintSprite();
 		sf::Sprite* getSprite();
 
 

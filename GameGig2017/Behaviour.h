@@ -12,7 +12,8 @@ class Behaviour {
 public:
 	enum BEHAVIOUR_TYPE {
 		BEHAVIOUR_TEST,
-		BEHAVIOUR_STATIC
+		BEHAVIOUR_STATIC,
+		BEHAVIOUR_PACMAN
 	};
 
 	virtual void collided(Entity* other, MTV v) = 0;

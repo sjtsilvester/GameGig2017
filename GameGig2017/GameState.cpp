@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "DemoBehaviour.h"
 #include "StaticBehaviour.h"
+#include "PacManBehaviour.h"
 
 GameState::GameState() {}
 GameState::~GameState() {}
@@ -15,19 +16,22 @@ void GameState::start() {
 	rm_.setDirectory("media/images/");
 	rm_.load("demo", "demo.png");
 	rm_.load("wall", "wall.png");
+	rm_.load("pacman", "pacman.png");
 
 	entity_manager_ = std::unique_ptr<EntityManager>(new EntityManager());
 
 	BehaviourMap* player_map = new BehaviourMap();
 	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_TEST,
 		std::unique_ptr<Behaviour>(new DemoBehaviour(&rm_))));
+	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_PACMAN,
+		std::unique_ptr<Behaviour>(new PacManBehaviour(&rm_))));
 
 	entity_manager_->add(new Entity(
 		player_map,
 		entity_manager_.get(),
 		sfld::Vector2f(200, 200),
 		"demo",
-		Behaviour::BEHAVIOUR_TEST,
+		Behaviour::BEHAVIOUR_PACMAN,
 		Entity::DYNAMIC_MOVING)
 	);
 
