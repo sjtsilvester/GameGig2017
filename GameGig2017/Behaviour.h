@@ -14,8 +14,8 @@ public:
 		BEHAVIOUR_TEST,
 		BEHAVIOUR_STATIC,
 		BEHAVIOUR_PACMAN,
-		BEHAVIOUR_PONG,
-		BEHAVIOUR_BULLET
+		BEHAVIOUR_GOOMBA,
+		BEHAVIOUR_GHOST
 	};
 
 	virtual void collided(Entity* other, MTV v) = 0;

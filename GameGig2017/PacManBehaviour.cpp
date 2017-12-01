@@ -20,15 +20,17 @@ PacManBehaviour::PacManBehaviour(ResourceManager<sf::Texture, std::string>* rm) 
 void PacManBehaviour::sfmlEvent(sf::Event evt) {}
 
 void PacManBehaviour::collided(Entity* other, MTV v){
-	if (other->getType() == "wall") {
-		isFlashing = true;
-	}
-	else if (other->getType() == "normal ghost") {
+	if (other->getType() == "ghost") {
 		takeDamage(10);
 		isFlashing = true;
 	}
 	else if (other->getType() == "vulnerable ghost") {
 		other->takeDamage(1000);
+		isFlashing = true;
+	}
+	else if (other->getType() == "Goomba") {
+		takeDamage(10);
+		isFlashing = true;
 	}
 }
 
