@@ -2,6 +2,7 @@
 
 #include "BaseState.h"
 #include "ResourceManager.h"
+#include "SoundManager.h"
 #include "Behaviour.h"
 
 class EntityManager;
