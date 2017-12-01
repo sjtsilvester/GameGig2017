@@ -22,6 +22,7 @@ void PacFoodBehaviour::collided(Entity* other, MTV v) {
 	if (other->getType() != "pacman" && other == player_) {
 		other->takeDamage(10);
 	}
+	takeDamage(100);
 }
 
 void PacFoodBehaviour::update(int frame_time) {
