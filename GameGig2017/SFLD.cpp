@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "SFLD.h"
-#include "DemoState.h"
+#include "GameState.h"
 #include "SoundManager.h"
 
 #define SCREEN_WIDTH 1024
@@ -29,7 +29,7 @@ void SFLD::init() {
 	exit_ = false;
 	sf::VideoMode vm(SCREEN_WIDTH, SCREEN_HEIGHT);
 	window_->create(vm, "Game Gig 2017");
-	stateManager_.push(new DemoState());
+	stateManager_.push(new GameState());
 }
 
 
