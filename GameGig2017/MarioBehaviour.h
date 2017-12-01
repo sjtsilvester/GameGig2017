@@ -9,6 +9,7 @@ public:
     void collided(Entity* other, MTV v);
 	void update(int frameTime);
     void render(sf::RenderTarget* target);
+	void sfmlEvent(sf::Event evt);
     sf::Sprite *getSprite();
     const double MAX_VSPEED = 1;
     const double GRAVITY = 0.002;

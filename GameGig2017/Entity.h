@@ -19,7 +19,6 @@ public:
 	Entity(BehaviourMap* behaviour_map,
 		EntityManager* entity_manager,
 		sfld::Vector2f position,
-		std::string type,
 		Behaviour::BEHAVIOUR_TYPE behaviour,
 		ENTITY_DYNAMICS dynamic,
 		bool scrolling
@@ -46,9 +45,10 @@ public:
 	std::string getType() const;
 
 	static const float scroll;
+	void setBehaviour(Behaviour::BEHAVIOUR_TYPE type);
+
 private:
 	void doOffset(sfld::Vector2f offset);
-	void setBehaviour(Behaviour::BEHAVIOUR_TYPE type);
 	void move(sfld::Vector2f velocity, int frame_time);
 
 	int health_;
