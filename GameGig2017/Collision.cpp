@@ -7,7 +7,7 @@
 MTV MTV::NONE = MTV(0, sfld::Vector2f(0, 0));
 
 Collision::~Collision() {
-}
+}        
 
 sfld::Vector2f Collision::rotatePoint(const sfld::Vector2f& point, float angle) {
 	angle = sfld::maths::toRadians(-angle);
