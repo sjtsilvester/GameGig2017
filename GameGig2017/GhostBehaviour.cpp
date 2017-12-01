@@ -16,7 +16,8 @@ GhostBehaviour::GhostBehaviour(ResourceManager<sf::Texture, std::string>* rm) {
 	sprite.setOrigin(16, 16);
 }
 
-void GhostBehaviour::sfmlEvent(sf::Event evt) {}
+void GhostBehaviour::sfmlEvent(sf::Event evt) {
+}
 
 void GhostBehaviour::collided(Entity* other, MTV v) {
 	if (other->getType() == "pacman" && scared) {
