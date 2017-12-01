@@ -36,7 +36,7 @@ void GameState::start() {
 		player_map,
 		entity_manager_.get(),
 		sfld::Vector2f(200, 200),
-		"demo",
+		"player",
 		Behaviour::BEHAVIOUR_PACMAN,
 		Entity::DYNAMIC_MOVING,
 		false)

@@ -39,6 +39,9 @@ void Entity::update(int frame_time) {
 	else {
 		doOffset(sfld::Vector2f(-1,0)*(float)scroll*(float)frame_time);
 	}
+	if (getPosition().x < -100 && getType() != "player") {
+		is_destroyed_ = true;
+	}
 }
 
 void Entity::render(sf::RenderTarget* target) {
@@ -61,6 +64,9 @@ void Entity::setBehaviour(Behaviour::BEHAVIOUR_TYPE type) {
 
 void Entity::takeDamage(int damage) {
 	health_ -= damage;
+	if (health_ <= 0) {
+		is_destroyed_ = true;
+	}
 }
 
 int Entity::getHealth() const {
@@ -93,6 +99,20 @@ void Entity::move(sfld::Vector2f velocity, int frame_time) {
 	if (scrolling_) {
 		velocity -= sfld::Vector2f(scroll, 0);
 	}
+	if (getType() == "player" && getPosition().x <= 0 && velocity.x < 0) {
+		velocity.x = 0;
+	}
+	if (getType() == "player" && getPosition().x >= 1024 && velocity.x > 0) {
+		velocity.x = 0;
+	}
+	if (getType() == "player" && getPosition().y <= 0 && velocity.y < 0) {
+		velocity.y = 0;
+	}
+	if (getType() == "player" && getPosition().y >= 768 && velocity.y > 0) {
+		velocity.y = 0;
+	}
+
+
 	sfld::Vector2f direction = velocity.normalise();
 	double mag = velocity.length();
 	for (auto& it : *list) {
