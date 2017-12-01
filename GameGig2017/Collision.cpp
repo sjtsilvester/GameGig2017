@@ -10,7 +10,7 @@ Collision::~Collision() {
 }
 
 sfld::Vector2f Collision::rotatePoint(const sfld::Vector2f& point, float angle) {
-	angle = maths::toRadians(-angle);
+	angle = sfld::maths::toRadians(-angle);
 	sfld::Vector2f rotated_point;
 	rotated_point.x = point.x * cos(angle) + point.y * sin(angle);
 	rotated_point.y = -point.x * sin(angle) + point.y * cos(angle);
@@ -18,7 +18,7 @@ sfld::Vector2f Collision::rotatePoint(const sfld::Vector2f& point, float angle) 
 }
 
 sfld::Vector2f Collision::rotatePoint(const sfld::Vector2f& point, const sfld::Vector2f& origin, float angle) {
-	angle = maths::toRadians(-angle);
+	angle = sfld::maths::toRadians(-angle);
 	sfld::Vector2f dif = point - origin;
 	sfld::Vector2f rotated_point;
 	rotated_point.x = dif.x * cos(angle) + dif.y * sin(angle);
