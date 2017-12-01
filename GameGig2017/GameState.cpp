@@ -5,8 +5,6 @@
 #include "DemoBehaviour.h"
 #include "StaticBehaviour.h"
 #include "PacManBehaviour.h"
-#include "GoombaBehaviour.h"
-#include "GhostBehaviour.h"
 #include "WorldManager.h"
 
 #include <iostream>
@@ -24,9 +22,6 @@ void GameState::start() {
 	rm_.load("demo", "demo.png");
 	rm_.load("wall", "wall.png");
 	rm_.load("pacman", "pacman.png");
-	rm_.load("goomba", "goomba.png");
-	rm_.load("ghost", "ghost.png");
-	rm_.load("ghost_vulnerable", "ghost_vulnerable.png");
 
 	entity_manager_ = std::unique_ptr<EntityManager>(new EntityManager());
 	world_manager_ = std::unique_ptr<WorldManager>(new WorldManager(entity_manager_.get()));
@@ -36,45 +31,18 @@ void GameState::start() {
 		std::unique_ptr<Behaviour>(new DemoBehaviour(&rm_))));
 	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_PACMAN,
 		std::unique_ptr<Behaviour>(new PacManBehaviour(&rm_))));
-	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_GOOMBA,
-		std::unique_ptr<Behaviour>(new GoombaBehaviour(&rm_))));
-	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_GHOST,
-		std::unique_ptr<Behaviour>(new GhostBehaviour(&rm_))));
 
 	entity_manager_->add(new Entity(
 		player_map,
 		entity_manager_.get(),
 		sfld::Vector2f(200, 200),
-		"demo",
+		"player",
 		Behaviour::BEHAVIOUR_PACMAN,
 		Entity::DYNAMIC_MOVING,
 		false)
 	);
 
-	entity_manager_->add(new Entity(
-		player_map,
-		entity_manager_.get(),
-		sfld::Vector2f(700, 650),
-		"goomba",
-		Behaviour::BEHAVIOUR_GOOMBA,
-		Entity::DYNAMIC_MOVING,
-		false)
-	);
-
-	entity_manager_->add(new Entity(
-		player_map,
-		entity_manager_.get(),
-		sfld::Vector2f(400, 300),
-		"ghost",
-		Behaviour::BEHAVIOUR_GHOST,
-		Entity::DYNAMIC_MOVING,
-		false)
-	);
-
-	createWall(1000, 300);
-	createWall(1000, 500);
-	createWall(3000, 200);
-	createWall(3500, 600);
+	load("testlevel.png");
 }
 
 void GameState::createWall(int t, int y) {
@@ -104,4 +72,18 @@ void GameState::update(int frame_time) {
 
 void GameState::render(sf::RenderTarget* target) {
 	entity_manager_->render(target);
+}
+
+void GameState::load(std::string texture) {
+	sf::Image level;
+	level.loadFromFile("media/levels/" + texture);
+	for (int x = 0; x < level.getSize().x; x++) {
+		for (int y = 0; y < level.getSize().y; y++) {
+			sf::Color color = level.getPixel(x, y);
+			int t = x * 500;
+			if (color == sf::Color(64, 64, 64)) {
+				createWall(t, y*32);
+			}//and more...
+		}
+	}
 }

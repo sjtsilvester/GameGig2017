@@ -1,6 +1,8 @@
 #include "Entity.h"
 #include "EntityManager.h"
 
+const float Entity::scroll = 0.1f;
+
 Entity::Entity(BehaviourMap* behaviour_map,
 	EntityManager* entity_manager,
 	sfld::Vector2f position,
@@ -31,7 +33,15 @@ std::string Entity::getType() const {
 
 void Entity::update(int frame_time) {
 	current_behaviour_->update(frame_time);
-	move(getVelocity(), frame_time);
+	if (dynamic_ == DYNAMIC_MOVING) {
+		move(getVelocity(), frame_time);
+	}
+	else {
+		doOffset(sfld::Vector2f(-1,0)*(float)scroll*(float)frame_time);
+	}
+	if (getPosition().x < -100 && getType() != "player") {
+		is_destroyed_ = true;
+	}
 }
 
 void Entity::render(sf::RenderTarget* target) {
@@ -54,6 +64,9 @@ void Entity::setBehaviour(Behaviour::BEHAVIOUR_TYPE type) {
 
 void Entity::takeDamage(int damage) {
 	health_ -= damage;
+	if (health_ <= 0) {
+		is_destroyed_ = true;
+	}
 }
 
 int Entity::getHealth() const {
@@ -84,8 +97,22 @@ void Entity::setDynamic(ENTITY_DYNAMICS dynamic) {
 void Entity::move(sfld::Vector2f velocity, int frame_time) {
 	EntityList* list = entity_manager_->getEntities();
 	if (scrolling_) {
-		velocity -= sfld::Vector2f(0.1, 0);
+		velocity -= sfld::Vector2f(scroll, 0);
 	}
+	if (getType() == "player" && getPosition().x <= 0 && velocity.x < 0) {
+		velocity.x = 0;
+	}
+	if (getType() == "player" && getPosition().x >= 1024 && velocity.x > 0) {
+		velocity.x = 0;
+	}
+	if (getType() == "player" && getPosition().y <= 0 && velocity.y < 0) {
+		velocity.y = 0;
+	}
+	if (getType() == "player" && getPosition().y >= 768 && velocity.y > 0) {
+		velocity.y = 0;
+	}
+
+
 	sfld::Vector2f direction = velocity.normalise();
 	double mag = velocity.length();
 	for (auto& it : *list) {
@@ -105,9 +132,9 @@ void Entity::move(sfld::Vector2f velocity, int frame_time) {
 					}
 					direction = direction - comp_u;
 					collided(it.get(), mtv);
-					//if (it->getDynamic() == DYNAMIC_STATIC) { //because then it won't resolve its own collisions
-						//it->collided(this, mtv);
-					//}
+					if (it->getDynamic() == DYNAMIC_STATIC) { //because then it won't resolve its own collisions
+						it->collided(this, mtv);
+					}
 				}
 			}
 			else {//otherwise, it's a circle, and we are only concerned with checking if they touch, no more
@@ -115,9 +142,9 @@ void Entity::move(sfld::Vector2f velocity, int frame_time) {
 					MTV mtv(Collision::getCollision(*getSprite(), current_behaviour_->getShape(), *it->getSprite(), current_behaviour_->getShape()));
 					if (!(mtv.axis == MTV::NONE.axis && mtv.overlap == MTV::NONE.overlap)) {
 						collided(it.get(), mtv);
-						//if (it->getDynamic() == DYNAMIC_STATIC) { //because then it won't resolve its own collisions
-							//it->collided(this, mtv);
-						//}
+						if (it->getDynamic() == DYNAMIC_STATIC) { //because then it won't resolve its own collisions
+							it->collided(this, mtv);
+						}
 					}
 				}
 			}

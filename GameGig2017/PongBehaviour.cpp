@@ -4,13 +4,10 @@
 #include "PongBehaviour.h"
 #include "Entity.h"
 
-
-
 PongBehaviour::PongBehaviour(ResourceManager<sf::Texture, std::string>* rm)
 {
 	resourceManager = rm;
-	speed = 0.2;
-	setVelocity(sfld::Vector2f(0, speed));
+	setVelocity(sfld::Vector2f(0, 0.3));
 
 	// initialise sprite
 	paintSprite();
@@ -33,7 +30,6 @@ void PongBehaviour::collided(Entity* other, MTV v)
 	}
 	else
 	{
-		takeDamage(10);
 	}
 }
 
@@ -41,12 +37,12 @@ void PongBehaviour::update(int frame_time)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		setVelocity(sfld::Vector2f(0, speed));
+		setVelocity(sfld::Vector2f(0, -0.3));
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		setVelocity(sfld::Vector2f(0.0, -speed));
+		setVelocity(sfld::Vector2f(0.0, 0.3));
 	}
 }
 
@@ -63,4 +59,8 @@ sf::Sprite* PongBehaviour::getSprite()
 void PongBehaviour::paintSprite()
 {
 	sprite.setTexture(resourceManager->get("pong"));
+}
+
+void PongBehaviour::sfmlEvent(sf::Event e)
+{
 }
