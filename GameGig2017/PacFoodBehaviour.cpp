@@ -33,7 +33,7 @@ void PacFoodBehaviour::render(sf::RenderTarget* target) {
 }
 
 void PacFoodBehaviour::paintSprite() {
-	sprite.setTexture(resourceManager->get("pacFood"));
+	sprite.setTexture(resourceManager->get("pacfood"));
 }
 
 sf::Sprite* PacFoodBehaviour::getSprite() {
