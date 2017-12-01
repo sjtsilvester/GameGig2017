@@ -28,8 +28,14 @@ void PongBehaviour::collided(Entity* other, MTV v)
 		velocity.x = -1 * velocity.x;
 		other->setVelocity(velocity);
 	}
-	else
-	{
+	else if (other->getType() == "ghost") {
+		takeDamage(10);
+	}
+	else if (other->getType() == "vulnerable ghost") {
+		other->takeDamage(1000);
+	}
+	else if (other->getType() == "goomba") {
+		takeDamage(10);
 	}
 }
 

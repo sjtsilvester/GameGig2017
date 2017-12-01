@@ -23,6 +23,10 @@ void GhostBehaviour::collided(Entity* other, MTV v) {
 	if (other->getType() == "pacman" && scared) {
 		takeDamage(1000);
 	}
+	else if (other->getType() == "mario") {
+		other->takeDamage(10);
+		takeDamage(1000);
+	}
 }
 
 void GhostBehaviour::update(int frame_time) {

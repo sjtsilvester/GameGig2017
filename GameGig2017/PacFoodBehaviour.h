@@ -5,22 +5,19 @@
 
 class Entity;
 
-class PacManBehaviour : public Behaviour {
+class PacFoodBehaviour : public Behaviour {
 private:
 	ResourceManager<sf::Texture, std::string>* resourceManager;
-	float speed;
-
 	sf::Sprite sprite;
 
 public:
-	PacManBehaviour(ResourceManager<sf::Texture, std::string>* rm);
+	PacFoodBehaviour(ResourceManager<sf::Texture, std::string>* rm, Entity* player);
 	void collided(Entity* other, MTV v);
 	void update(int frame_time);
 	void render(sf::RenderTarget* target); //Usage: target->draw(sprite)
 	void sfmlEvent(sf::Event evt);
-
 	void paintSprite();
 	sf::Sprite* getSprite();
-
-
+private:
+	Entity* player_;
 };

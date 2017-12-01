@@ -15,7 +15,12 @@ public:
 		BEHAVIOUR_STATIC,
 		BEHAVIOUR_PACMAN,
 		BEHAVIOUR_GOOMBA,
-		BEHAVIOUR_GHOST
+		BEHAVIOUR_GHOST,
+		BEHAVIOUR_MARIO,
+		BEHAVIOUR_PONG,
+		BEHAVIOUR_BULLET,
+		BEHAVIOUR_SHOOTER,
+		BEHAVIOUR_FOOD
 	};
 
 	virtual void collided(Entity* other, MTV v) = 0;
@@ -35,10 +40,12 @@ public:
 	void setEntity(Entity* entity);
 
 	virtual sf::Sprite* getSprite() = 0;
+protected:
+	Entity* entity_;
 private:
 	sfld::Vector2f velocity_;
 	ENTITY_SHAPE shape_;
-	Entity* entity_;
+	
 };
 
 typedef std::map<Behaviour::BEHAVIOUR_TYPE, std::unique_ptr<Behaviour>> BehaviourMap;

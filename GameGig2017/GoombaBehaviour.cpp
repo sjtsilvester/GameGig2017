@@ -19,7 +19,8 @@ GoombaBehaviour::GoombaBehaviour(ResourceManager<sf::Texture, std::string>* rm) 
 void GoombaBehaviour::sfmlEvent(sf::Event evt) {}
 
 void GoombaBehaviour::collided(Entity* other, MTV v) {
-	if (other->getType() == "mario" && v.axis.y != 0) {
+	if (other->getType() == "mario" && v.axis.y != 0 && !flat) {
+		other->takeDamage(10);
 		sprite.setScale(sf::Vector2f(1.0f, 0.4f));
 		flat = true;
 	}

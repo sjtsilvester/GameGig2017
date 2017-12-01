@@ -6,7 +6,7 @@ MarioBehaviour::MarioBehaviour(ResourceManager<sf::Texture, std::string>* rm) {
     this->rm = rm;
     this->can_jump = false;
     this->jump_timer = JUMP_TIME;    // milliseconds
-    sprite.setTexture(rm->get("demo"));
+    sprite.setTexture(rm->get("mario"));
     setVelocity(sfld::Vector2f(0, 0));
 }
 
@@ -17,6 +17,8 @@ void MarioBehaviour::collided(Entity *other, MTV v){
         jump_timer = 0;
     }
 }
+
+void MarioBehaviour::sfmlEvent(sf::Event evt) {}
 
 MarioBehaviour::~MarioBehaviour() {}
 
