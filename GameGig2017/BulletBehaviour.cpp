@@ -28,6 +28,9 @@ void BulletBehaviour::collided(Entity* other, MTV v)
 		other->takeDamage(10);
 		takeDamage(1000);
 	}
+	else if( other->getType() != "pong"){
+		takeDamage(1000);
+	}
 }
 
 void BulletBehaviour::update(int frame_time)
