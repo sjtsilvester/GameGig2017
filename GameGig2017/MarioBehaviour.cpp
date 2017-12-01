@@ -1,6 +1,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include "ResourceManager.h"
 #include "MarioBehaviour.h"
+#include "SoundManager.h"
 
 MarioBehaviour::MarioBehaviour(ResourceManager<sf::Texture, std::string>* rm) {
     this->rm = rm;
@@ -39,6 +40,7 @@ void MarioBehaviour::update(int frame_time) {
     jump_timer--;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         if (jump_timer <= 0 && can_jump) {
+			SoundManager::play("jump");
             setVelocity(sfld::Vector2f(getVelocity().x, -JUMP));
             jump_timer = JUMP_TIME;
             can_jump = false;

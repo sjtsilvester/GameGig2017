@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "EntityManager.h"
 #include "ParticleEngine.h"
+#include "SoundManager.h"
 
 const float Entity::scroll = 0.1f;
 
@@ -99,6 +100,23 @@ void Entity::takeDamage(int damage) {
 	health_ -= damage;
 	if (health_ <= 0) {
 		is_destroyed_ = true;
+		if (getType() == "pacman" || getType() == "pong" || getType() == "mario") {
+			SoundManager::play("death");
+			engine->generateExplosionEffect(getPosition());
+		}
+		else if (getType() == "goomba" || getType() == "ghost" || getType() == "shooter") {
+			SoundManager::play("goombadeath");
+			engine->generateMiniExplosionEffect(getPosition());
+		}
+		else if (getType() == "food") {
+			SoundManager::play("pickupcoin");
+		}
+	}
+	else {
+		if (getType() == "pacman" || getType() == "pong" || getType() == "mario") {
+			SoundManager::play("goombadeath");
+			engine->generateMiniExplosionEffect(getPosition());
+		}
 	}
 }
 

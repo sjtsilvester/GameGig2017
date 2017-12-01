@@ -1,6 +1,7 @@
 #include "ShooterBehaviour.h"
 #include "Entity.h"
 #include "GameState.h"
+#include "SoundManager.h"
 
 ShooterBehaviour::ShooterBehaviour(ResourceManager<sf::Texture, std::string>* rm,
 	Entity* player, GameState* gameState) {
@@ -30,6 +31,7 @@ void ShooterBehaviour::update(int frameTime) {
 		setVelocity(sfld::Vector2f(0, -getVelocity().y));
 	}
 	if (shoottimer > 1500) {
+		SoundManager::play("lasershoot");
 		shoottimer = 0;
 		sfld::Vector2f dir = player_->getPosition() - entity_->getPosition();
 		dir = dir.normalise();

@@ -27,12 +27,15 @@ GameState::~GameState() {}
 void GameState::sfmlEvent(sf::Event evt) {
 	if (evt.type == sf::Event::KeyPressed) {
 		if (evt.key.code == sf::Keyboard::I) {
+			SoundManager::play("swapcharacter");
 			player->setBehaviour(Behaviour::BEHAVIOUR_PONG);
 		}
 		else if (evt.key.code == sf::Keyboard::O) {
+			SoundManager::play("swapcharacter");
 			player->setBehaviour(Behaviour::BEHAVIOUR_MARIO);
 		}
 		else if (evt.key.code == sf::Keyboard::P) {
+			SoundManager::play("swapcharacter");
 			player->setBehaviour(Behaviour::BEHAVIOUR_PACMAN);
 		}
 	}
@@ -40,6 +43,8 @@ void GameState::sfmlEvent(sf::Event evt) {
 
 
 void GameState::start() {
+
+	texture.loadFromFile("media/images/mario_background.png");
 
 	rm_.setDirectory("media/images/");
 	rm_.load("mario", "mario.png");
@@ -52,7 +57,15 @@ void GameState::start() {
 	rm_.load("goomba", "goomba.png");
 	rm_.load("pacfood", "pacfood.png");
 
-	
+	SoundManager::add("death", "media/sounds/death.wav");
+	SoundManager::add("goombadeath", "media/sounds/goomba_death.wav");
+	SoundManager::add("jump", "media/sounds/Jump.wav");
+	SoundManager::add("lasershoot", "media/sounds/Laser_shoot.wav");
+	SoundManager::add("pickupcoin", "media/sounds/Pickup_coin.wav");
+	SoundManager::add("swapcharacter", "media/sounds/Swap_character.wav");
+
+	SoundManager::addMusic("music", "media/sounds/gj2017.wav");
+	SoundManager::playMusic("music");
 
 
 	particle_manager_ = std::unique_ptr<ParticleEngine>(new ParticleEngine());
@@ -75,7 +88,7 @@ void GameState::start() {
 		Entity::DYNAMIC_MOVING,
 		false, particle_manager_.get()
 	);
-
+	player->takeDamage(-100);
 	entity_manager_->add(player);
 
 	createShooter(1000, 500);
@@ -190,8 +203,10 @@ void GameState::update(int frame_time) {
 
 void GameState::render(sf::RenderTarget* target) {
 	//particle_manager_->renderStatics(target);
+	sf::Sprite s(texture);
+	target->draw(s);
 	entity_manager_->render(target);
-	//particle_manager_->renderParticles(target);
+	particle_manager_->renderParticles(target);
 }
 
 void GameState::load(std::string texture) {

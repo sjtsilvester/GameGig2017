@@ -42,4 +42,6 @@ private:
 	std::unique_ptr<WorldManager> world_manager_;
 	std::unique_ptr<EntityManager> entity_manager_;
 	std::unique_ptr<ParticleEngine> particle_manager_;
+
+	sf::Texture texture;
 };
