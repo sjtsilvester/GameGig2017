@@ -22,6 +22,8 @@ void GoombaBehaviour::collided(Entity* other, MTV v) {
 	if (other->getType() == "mario" && v.axis.y != 0 && !flat) {
 		sprite.setScale(sf::Vector2f(1.0f, 0.4f));
 		flat = true;
+	}else if(other->getType() == "mario" && !flat){
+		other->takeDamage(10);
 	}
 }
 

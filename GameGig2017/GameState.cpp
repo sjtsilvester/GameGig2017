@@ -48,7 +48,7 @@ void GameState::start() {
 	rm_.load("bullet", "bullet.png");
 	rm_.load("ghost", "ghost.png");
 	rm_.load("goomba", "goomba.png");
-	rm_.load("pacFood", "pacFood.png");
+	rm_.load("pacfood", "pacfood.png");
 
 
 
@@ -143,14 +143,14 @@ void GameState::createGoomba(int t, int y) {
 void GameState::createPacfood(int t, int y) {
 	BehaviourMap* wall_map = new BehaviourMap();
 	wall_map->insert(std::make_pair(Behaviour::BEHAVIOUR_FOOD,
-		std::unique_ptr<Behaviour>(new GoombaBehaviour(&rm_))));
+		std::unique_ptr<Behaviour>(new PacFoodBehaviour(&rm_, player))));
 
 	world_manager_->addEntity(t, new Entity(
 		wall_map,
 		entity_manager_.get(),
 		sfld::Vector2f(0, 0),
 		Behaviour::BEHAVIOUR_FOOD,
-		Entity::DYNAMIC_MOVING,
+		Entity::DYNAMIC_STATIC,
 		true), y
 	);
 }
@@ -164,7 +164,7 @@ void GameState::createBullet(sfld::Vector2f velocity, sfld::Vector2f position) {
 	Entity* b = new Entity(
 		bullet_map,
 		entity_manager_.get(),
-		position + 40.0f*velocity.normalise(),
+		position + 20.0f*velocity.normalise(),
 		Behaviour::BEHAVIOUR_BULLET,
 		Entity::DYNAMIC_MOVING,
 		false);

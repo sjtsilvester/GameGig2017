@@ -59,6 +59,14 @@ void Entity::setBehaviour(Behaviour::BEHAVIOUR_TYPE type) {
 	current_behaviour_->setEntity(this);
 	setPosition(getPosition()); //refresh position for new sprite
 	getSprite()->setRotation(0);
+
+	if (type == Behaviour::BEHAVIOUR_PACMAN) {
+		scrolling_ = true;
+	}
+	else {
+		scrolling_ = false;
+	}
+
 	if (type == Behaviour::BEHAVIOUR_PACMAN) {
 		type_ = "pacman";
 	}
@@ -82,6 +90,9 @@ void Entity::setBehaviour(Behaviour::BEHAVIOUR_TYPE type) {
 	}
 	else if (type == Behaviour::BEHAVIOUR_FOOD) {
 		type_ = "food";
+	}
+	else if (type == Behaviour::BEHAVIOUR_STATIC) {
+		type_ = "static";
 	}
 }
 
