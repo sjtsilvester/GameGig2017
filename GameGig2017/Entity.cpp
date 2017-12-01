@@ -6,12 +6,14 @@ Entity::Entity(BehaviourMap* behaviour_map,
 	sfld::Vector2f position,
 	std::string type,
 	Behaviour::BEHAVIOUR_TYPE behaviour,
-	ENTITY_DYNAMICS dynamic
+	ENTITY_DYNAMICS dynamic,
+	bool scrolling
 	) :
 	is_destroyed_(is_destroyed_),
 	entity_manager_(entity_manager),
 	type_(type),
-	dynamic_(dynamic){
+	dynamic_(dynamic),
+	scrolling_(scrolling){
 
 	behaviour_map_ = std::unique_ptr<BehaviourMap>(behaviour_map);
 
@@ -81,6 +83,9 @@ void Entity::setDynamic(ENTITY_DYNAMICS dynamic) {
 
 void Entity::move(sfld::Vector2f velocity, int frame_time) {
 	EntityList* list = entity_manager_->getEntities();
+	if (scrolling_) {
+		velocity -= sfld::Vector2f(0.1, 0);
+	}
 	sfld::Vector2f direction = velocity.normalise();
 	double mag = velocity.length();
 	for (auto& it : *list) {
@@ -100,9 +105,9 @@ void Entity::move(sfld::Vector2f velocity, int frame_time) {
 					}
 					direction = direction - comp_u;
 					collided(it.get(), mtv);
-					if (it->getDynamic() == DYNAMIC_STATIC) { //because then it won't resolve its own collisions
-						it->collided(this, mtv);
-					}
+					//if (it->getDynamic() == DYNAMIC_STATIC) { //because then it won't resolve its own collisions
+						//it->collided(this, mtv);
+					//}
 				}
 			}
 			else {//otherwise, it's a circle, and we are only concerned with checking if they touch, no more
@@ -110,9 +115,9 @@ void Entity::move(sfld::Vector2f velocity, int frame_time) {
 					MTV mtv(Collision::getCollision(*getSprite(), current_behaviour_->getShape(), *it->getSprite(), current_behaviour_->getShape()));
 					if (!(mtv.axis == MTV::NONE.axis && mtv.overlap == MTV::NONE.overlap)) {
 						collided(it.get(), mtv);
-						if (it->getDynamic() == DYNAMIC_STATIC) { //because then it won't resolve its own collisions
-							it->collided(this, mtv);
-						}
+						//if (it->getDynamic() == DYNAMIC_STATIC) { //because then it won't resolve its own collisions
+							//it->collided(this, mtv);
+						//}
 					}
 				}
 			}
