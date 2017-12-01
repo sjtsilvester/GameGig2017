@@ -21,7 +21,8 @@ public:
 		sfld::Vector2f position,
 		std::string type,
 		Behaviour::BEHAVIOUR_TYPE behaviour,
-		ENTITY_DYNAMICS dynamic
+		ENTITY_DYNAMICS dynamic,
+		bool scrolling
 	);
 
 	void collided(Entity* other, MTV v);
@@ -60,4 +61,6 @@ private:
 
 	EntityManager* entity_manager_;
 	ENTITY_DYNAMICS dynamic_;
+
+	bool scrolling_;
 };

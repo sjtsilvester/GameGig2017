@@ -5,6 +5,7 @@
 #include "DemoBehaviour.h"
 #include "StaticBehaviour.h"
 #include "PacManBehaviour.h"
+#include "WorldManager.h"
 
 GameState::GameState() {}
 GameState::~GameState() {}
@@ -19,6 +20,7 @@ void GameState::start() {
 	rm_.load("pacman", "pacman.png");
 
 	entity_manager_ = std::unique_ptr<EntityManager>(new EntityManager());
+	world_manager_ = std::unique_ptr<WorldManager>(new WorldManager(entity_manager_.get()));
 
 	BehaviourMap* player_map = new BehaviourMap();
 	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_TEST,
@@ -32,33 +34,29 @@ void GameState::start() {
 		sfld::Vector2f(200, 200),
 		"demo",
 		Behaviour::BEHAVIOUR_PACMAN,
-		Entity::DYNAMIC_MOVING)
+		Entity::DYNAMIC_MOVING,
+		false)
 	);
 
-	BehaviourMap* wall_map0 = new BehaviourMap();
-	wall_map0->insert(std::make_pair(Behaviour::BEHAVIOUR_STATIC,
+	createWall(1000, 300);
+	createWall(1000, 500);
+	createWall(3000, 200);
+	createWall(3500, 600);
+}
+
+void GameState::createWall(int t, int y) {
+	BehaviourMap* wall_map = new BehaviourMap();
+	wall_map->insert(std::make_pair(Behaviour::BEHAVIOUR_STATIC,
 		std::unique_ptr<Behaviour>(new StaticBehaviour(&rm_))));
 
-	entity_manager_->add(new Entity(
-		wall_map0,
+	world_manager_->addEntity(t, new Entity(
+		wall_map,
 		entity_manager_.get(),
-		sfld::Vector2f(450, 450),
+		sfld::Vector2f(0, 0),
 		"wall",
 		Behaviour::BEHAVIOUR_STATIC,
-		Entity::DYNAMIC_STATIC)
-	);
-
-	BehaviourMap* wall_map1 = new BehaviourMap();
-	wall_map1->insert(std::make_pair(Behaviour::BEHAVIOUR_STATIC,
-		std::unique_ptr<Behaviour>(new StaticBehaviour(&rm_))));
-
-	entity_manager_->add(new Entity(
-		wall_map1,
-		entity_manager_.get(),
-		sfld::Vector2f(400, 400),
-		"wall",
-		Behaviour::BEHAVIOUR_STATIC,
-		Entity::DYNAMIC_STATIC)
+		Entity::DYNAMIC_STATIC,
+		true), y
 	);
 }
 
@@ -68,6 +66,7 @@ void GameState::exit() {}
 
 void GameState::update(int frame_time) {
 	entity_manager_->update(frame_time);
+	world_manager_->update(frame_time);
 }
 
 void GameState::render(sf::RenderTarget* target) {
