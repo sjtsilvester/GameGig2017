@@ -9,6 +9,7 @@
 
 class Behaviour; 
 class EntityManager;
+class ParticleEngine;
 
 class Entity {
 public:
@@ -21,7 +22,8 @@ public:
 		sfld::Vector2f position,
 		Behaviour::BEHAVIOUR_TYPE behaviour,
 		ENTITY_DYNAMICS dynamic,
-		bool scrolling
+		bool scrolling,
+		ParticleEngine* particle
 	);
 
 	void collided(Entity* other, MTV v);
@@ -48,6 +50,7 @@ public:
 	void setBehaviour(Behaviour::BEHAVIOUR_TYPE type);
 
 private:
+	ParticleEngine* engine;
 	void doOffset(sfld::Vector2f offset);
 	void move(sfld::Vector2f velocity, int frame_time);
 

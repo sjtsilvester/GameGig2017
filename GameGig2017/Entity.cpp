@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "EntityManager.h"
+#include "ParticleEngine.h"
 
 const float Entity::scroll = 0.1f;
 
@@ -8,14 +9,16 @@ Entity::Entity(BehaviourMap* behaviour_map,
 	sfld::Vector2f position,
 	Behaviour::BEHAVIOUR_TYPE behaviour,
 	ENTITY_DYNAMICS dynamic,
-	bool scrolling
-	) :
+	bool scrolling,
+	ParticleEngine* engine_
+) :
 	is_destroyed_(is_destroyed_),
 	entity_manager_(entity_manager),
 	dynamic_(dynamic),
 	scrolling_(scrolling){
-
+	engine = engine_;
 	behaviour_map_ = std::unique_ptr<BehaviourMap>(behaviour_map);
+	health_ = 10;
 
 	setBehaviour(behaviour);
 	setPosition(position);
@@ -62,12 +65,6 @@ void Entity::setBehaviour(Behaviour::BEHAVIOUR_TYPE type) {
 
 	if (type == Behaviour::BEHAVIOUR_PACMAN) {
 		scrolling_ = true;
-	}
-	else {
-		scrolling_ = false;
-	}
-
-	if (type == Behaviour::BEHAVIOUR_PACMAN) {
 		type_ = "pacman";
 	}
 	else if (type == Behaviour::BEHAVIOUR_BULLET) {
@@ -80,9 +77,11 @@ void Entity::setBehaviour(Behaviour::BEHAVIOUR_TYPE type) {
 		type_ = "goomba";
 	}
 	else if (type == Behaviour::BEHAVIOUR_MARIO) {
+		scrolling_ = false;
 		type_ = "mario";
 	}
 	else if (type == Behaviour::BEHAVIOUR_PONG) {
+		scrolling_ = false;
 		type_ = "pong";
 	}
 	else if (type == Behaviour::BEHAVIOUR_SHOOTER) {

@@ -13,6 +13,8 @@
 #include "GhostBehaviour.h"
 #include "GoombaBehaviour.h"
 #include "PacFoodBehaviour.h"
+#include "ParticleEngine.h"
+#include "SoundManager.h"
 
 #include <iostream>
 #include <fstream>  
@@ -50,8 +52,10 @@ void GameState::start() {
 	rm_.load("goomba", "goomba.png");
 	rm_.load("pacfood", "pacfood.png");
 
+	SoundManager::
 
 
+	particle_manager_ = std::unique_ptr<ParticleEngine>(new ParticleEngine());
 	entity_manager_ = std::unique_ptr<EntityManager>(new EntityManager());
 	world_manager_ = std::unique_ptr<WorldManager>(new WorldManager(entity_manager_.get()));
 
@@ -69,7 +73,7 @@ void GameState::start() {
 		sfld::Vector2f(200, 200),
 		Behaviour::BEHAVIOUR_PONG,
 		Entity::DYNAMIC_MOVING,
-		false
+		false, particle_manager_.get()
 	);
 
 	entity_manager_->add(player);
@@ -91,7 +95,7 @@ void GameState::createWall(int t, int y) {
 		sfld::Vector2f(0, 0),
 		Behaviour::BEHAVIOUR_STATIC,
 		Entity::DYNAMIC_STATIC,
-		true), y
+		true, particle_manager_.get()), y
 	);
 }
 
@@ -106,7 +110,7 @@ void GameState::createShooter(int t, int y) {
 		sfld::Vector2f(0, 0),
 		Behaviour::BEHAVIOUR_SHOOTER,
 		Entity::DYNAMIC_MOVING,
-		true), y
+		true, particle_manager_.get()), y
 	);
 }
 
@@ -121,7 +125,7 @@ void GameState::createGhost(int t, int y) {
 		sfld::Vector2f(0, 0),
 		Behaviour::BEHAVIOUR_GHOST,
 		Entity::DYNAMIC_MOVING,
-		true), y
+		true, particle_manager_.get()), y
 	);
 }
 
@@ -136,7 +140,7 @@ void GameState::createGoomba(int t, int y) {
 		sfld::Vector2f(0, 0),
 		Behaviour::BEHAVIOUR_GOOMBA,
 		Entity::DYNAMIC_MOVING,
-		true), y
+		true, particle_manager_.get()), y
 	);
 }
 
@@ -150,8 +154,8 @@ void GameState::createPacfood(int t, int y) {
 		entity_manager_.get(),
 		sfld::Vector2f(0, 0),
 		Behaviour::BEHAVIOUR_FOOD,
-		Entity::DYNAMIC_STATIC,
-		true), y
+		Entity::DYNAMIC_MOVING,
+		true, particle_manager_.get()), y
 	);
 }
 
@@ -164,10 +168,10 @@ void GameState::createBullet(sfld::Vector2f velocity, sfld::Vector2f position) {
 	Entity* b = new Entity(
 		bullet_map,
 		entity_manager_.get(),
-		position + 20.0f*velocity.normalise(),
+		position + 40.0f*velocity.normalise(),
 		Behaviour::BEHAVIOUR_BULLET,
 		Entity::DYNAMIC_MOVING,
-		false);
+		false, particle_manager_.get());
 	b->setVelocity(velocity);
 	entity_manager_->add(b);
 
@@ -181,10 +185,13 @@ void GameState::exit() {}
 void GameState::update(int frame_time) {
 	entity_manager_->update(frame_time);
 	world_manager_->update(frame_time);
+	particle_manager_->update(frame_time);
 }
 
 void GameState::render(sf::RenderTarget* target) {
+	//particle_manager_->renderStatics(target);
 	entity_manager_->render(target);
+	//particle_manager_->renderParticles(target);
 }
 
 void GameState::load(std::string texture) {
