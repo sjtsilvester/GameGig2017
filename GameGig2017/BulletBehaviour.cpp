@@ -21,12 +21,9 @@ BulletBehaviour::~BulletBehaviour()
 
 void BulletBehaviour::collided(Entity* other, MTV v)
 {
-	if (other->getType() == "pong")
-		;
-	else
+	if (other->getType() != "pong")
 	{
 		other->takeDamage(10);
-		//takeDamage(4000000000);
 	}
 }
 

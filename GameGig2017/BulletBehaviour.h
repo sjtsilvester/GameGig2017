@@ -1,6 +1,5 @@
 #pragma once
 
-#include "stdafx.h"
 #include "Collision.h"
 #include "ResourceManager.h"
 #include "Behaviour.h"
@@ -12,7 +11,6 @@ class BulletBehaviour : public Behaviour {
 	sf::Sprite sprite;
 	ENTITY_SHAPE shape_;
 	Entity* entity_;
-
 public:
 	BulletBehaviour(ResourceManager<sf::Texture, std::string>* rm);
 	~BulletBehaviour();
