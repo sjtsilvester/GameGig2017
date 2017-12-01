@@ -4,6 +4,7 @@
 
 #include <SFML/System/Vector2.hpp>
 #include "maths.h"
+#include <math.h>
 
 namespace sfld {
 	template<typename T>
@@ -34,7 +35,7 @@ namespace sfld {
 	template<typename T>
 	Vector2<T>::Vector2(T X, T Y) {
 		this->x = X;
-		y = Y;
+		this->y = Y;
 	}
 
 	template<typename T>
@@ -47,8 +48,8 @@ namespace sfld {
 	Vector2<T> Vector2<T>::rotate(float degrees) {
 		float radians = maths::toRadians(degrees);
 		Vector2<T> rotated;
-		rotated.x = x * cos(radians) + y * sin(radians);
-		rotated.y = -point.x * sin(radians) + point.y * cos(radians);
+		rotated.x = this->x * cos(radians) + this->y * sin(radians);
+		rotated.y = -this->x * sin(radians) + this->y * cos(radians);
 		return rotated;
 	}
 
