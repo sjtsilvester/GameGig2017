@@ -43,6 +43,7 @@ public:
 	ENTITY_DYNAMICS getDynamic() const;
 	void setDynamic(ENTITY_DYNAMICS dynamic);
 	std::string getType() const;
+
 private:
 	void doOffset(sfld::Vector2f offset);
 	void setBehaviour(Behaviour::BEHAVIOUR_TYPE type);
