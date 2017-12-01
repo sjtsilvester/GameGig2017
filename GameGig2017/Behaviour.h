@@ -13,7 +13,9 @@ public:
 	enum BEHAVIOUR_TYPE {
 		BEHAVIOUR_TEST,
 		BEHAVIOUR_STATIC,
-		BEHAVIOUR_PACMAN
+		BEHAVIOUR_PACMAN,
+		BEHAVIOUR_GOOMBA,
+		BEHAVIOUR_GHOST
 	};
 
 	virtual void collided(Entity* other, MTV v) = 0;

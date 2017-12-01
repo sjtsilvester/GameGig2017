@@ -5,6 +5,8 @@
 #include "DemoBehaviour.h"
 #include "StaticBehaviour.h"
 #include "PacManBehaviour.h"
+#include "GoombaBehaviour.h"
+#include "GhostBehaviour.h"
 #include "WorldManager.h"
 
 #include <iostream>
@@ -22,6 +24,9 @@ void GameState::start() {
 	rm_.load("demo", "demo.png");
 	rm_.load("wall", "wall.png");
 	rm_.load("pacman", "pacman.png");
+	rm_.load("goomba", "goomba.png");
+	rm_.load("ghost", "ghost.png");
+	rm_.load("ghost_vulnerable", "ghost_vulnerable.png");
 
 	entity_manager_ = std::unique_ptr<EntityManager>(new EntityManager());
 	world_manager_ = std::unique_ptr<WorldManager>(new WorldManager(entity_manager_.get()));
@@ -31,6 +36,10 @@ void GameState::start() {
 		std::unique_ptr<Behaviour>(new DemoBehaviour(&rm_))));
 	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_PACMAN,
 		std::unique_ptr<Behaviour>(new PacManBehaviour(&rm_))));
+	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_GOOMBA,
+		std::unique_ptr<Behaviour>(new GoombaBehaviour(&rm_))));
+	player_map->insert(std::make_pair(Behaviour::BEHAVIOUR_GHOST,
+		std::unique_ptr<Behaviour>(new GhostBehaviour(&rm_))));
 
 	entity_manager_->add(new Entity(
 		player_map,
@@ -38,6 +47,26 @@ void GameState::start() {
 		sfld::Vector2f(200, 200),
 		"demo",
 		Behaviour::BEHAVIOUR_PACMAN,
+		Entity::DYNAMIC_MOVING,
+		false)
+	);
+
+	entity_manager_->add(new Entity(
+		player_map,
+		entity_manager_.get(),
+		sfld::Vector2f(700, 650),
+		"goomba",
+		Behaviour::BEHAVIOUR_GOOMBA,
+		Entity::DYNAMIC_MOVING,
+		false)
+	);
+
+	entity_manager_->add(new Entity(
+		player_map,
+		entity_manager_.get(),
+		sfld::Vector2f(400, 300),
+		"ghost",
+		Behaviour::BEHAVIOUR_GHOST,
 		Entity::DYNAMIC_MOVING,
 		false)
 	);
