@@ -6,9 +6,9 @@ std::vector<sf::Sound*> SoundManager::sounds;
 std::map<std::string, sf::Sound*> SoundManager::uniqueSounds;
 std::map<std::string, sf::Music*> SoundManager::music;
 bool SoundManager::nulled = false;
-sf::Music* SoundManager::playing = false;
-sf::Music* SoundManager::fadeout = false;
-sf::Music* SoundManager::toplay = false;
+sf::Music* SoundManager::playing = NULL;
+sf::Music* SoundManager::fadeout = NULL;
+sf::Music* SoundManager::toplay = NULL;
 bool SoundManager::fading = false;
 bool SoundManager::musicin = false;
 int SoundManager::musicVolume = 80;
@@ -114,9 +114,9 @@ void SoundManager::update(double frameTime) {
 		}
 		if (fadeout->getVolume() <= 0) {
 			playing->pause();
-			fading = false;
+			fading = NULL;
 			musicin = true;
-			fadeout = false;
+			fadeout = NULL;
 			toplay->setVolume(0);
 			toplay->play();
 		}
@@ -128,7 +128,7 @@ void SoundManager::update(double frameTime) {
 		if (toplay->getVolume() >= musicVolume) {
 			musicin = false;
 			playing = toplay;
-			toplay = false;
+			toplay = NULL;
 		}
 	}
 }

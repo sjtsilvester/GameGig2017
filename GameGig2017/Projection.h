@@ -11,4 +11,4 @@ public:
 	double getOverlap(const Projection& other) const;
 };
 
-#endif#pragma once
+#endif
