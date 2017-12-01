@@ -2,6 +2,7 @@
 #include "Collision.h"
 #include "ResourceManager.h"
 #include "PongBehaviour.h"
+#include "Entity.h"
 
 
 

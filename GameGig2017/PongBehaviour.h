@@ -3,9 +3,11 @@
 #include "stdafx.h"
 #include "Collision.h"
 #include "ResourceManager.h"
-#include "PongBehaviour.h"
+#include "Behaviour.h"
 
-class PongBehaviour {
+class Entity;
+
+class PongBehaviour : public Behaviour{
 	ResourceManager<sf::Texture, std::string> resourceManager;
 	sf::Sprite sprite;
 	sfld::Vector2f velocity;
