@@ -194,19 +194,19 @@ void GameState::load(std::string texture) {
 		for (int y = 0; y < level.getSize().y; y++) {
 			sf::Color color = level.getPixel(x, y);
 			int t = x * 500;
-			if (color == sf::Color(64, 64, 64)) {
+			if (color == sf::Color(64, 64, 64)) { //grey
 				createWall(t, y*32);
 			}
-			else if(color == sf::Color(255, 0, 0)) {
+			else if(color == sf::Color(255, 0, 0)) { //red
 				createGhost(t, y * 32);
 			}
-			else if (color == sf::Color(255, 106, 0)) {
+			else if (color == sf::Color(255, 106, 0)) { //orange
 				createGoomba(t, y * 32);
 			}
-			else if (color == sf::Color(255, 216, 0)) {
+			else if (color == sf::Color(255, 216, 0)) { //yellow-orange
 				createShooter(t, y * 32);
 			}
-			else if (color == sf::Color(182, 255, 0)) {
+			else if (color == sf::Color(182, 255, 0)) { //light green
 				createPacfood(t, y * 32);
 			}
 		}
