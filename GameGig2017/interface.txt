@@ -1,9 +1,13 @@
 Behaviour:
 
-Behaviour(ResourceManager<sf::Texture, std::string>* rm); //You will want to save rm to a private variable. To get a texture: rm->get("texture name"); We will load textures later.
+Behaviour(ResourceManager<sf::Texture, std::string>* rm); //You will want to save rm to a private variable. To get a texture: rm->get("texture name"); We will load
 void collided(Entity* other, MTV v);
 void update(int frame_time);
 void render(sf::RenderTarget* target); //Usage: target->draw(sprite)
 sf::Sprite* getSprite();
+
+
+Functions you don't override, but you should use:
+
 void setVelocity(sfld::Vector2f velocity);
 sfld::Vector2f getVelocity();
