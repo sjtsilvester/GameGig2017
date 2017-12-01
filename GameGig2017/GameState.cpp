@@ -52,7 +52,7 @@ void GameState::start() {
 	rm_.load("goomba", "goomba.png");
 	rm_.load("pacfood", "pacfood.png");
 
-	SoundManager::
+	
 
 
 	particle_manager_ = std::unique_ptr<ParticleEngine>(new ParticleEngine());
