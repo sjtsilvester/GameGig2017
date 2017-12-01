@@ -20,6 +20,8 @@ public:
 	void update(int frame_time);
 	void render(sf::RenderTarget* target);
 private:
+	void load(std::string texture);
+
 	void createWall(int time, int y);
 
 	ResourceManager<sf::Texture, std::string> rm_;

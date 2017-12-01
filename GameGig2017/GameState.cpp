@@ -38,10 +38,7 @@ void GameState::start() {
 		false)
 	);
 
-	createWall(1000, 300);
-	createWall(1000, 500);
-	createWall(3000, 200);
-	createWall(3500, 600);
+	load("testlevel.png");
 }
 
 void GameState::createWall(int t, int y) {
@@ -71,4 +68,18 @@ void GameState::update(int frame_time) {
 
 void GameState::render(sf::RenderTarget* target) {
 	entity_manager_->render(target);
+}
+
+void GameState::load(std::string texture) {
+	sf::Image level;
+	level.loadFromFile("media/levels/" + texture);
+	for (int x = 0; x < level.getSize().x; x++) {
+		for (int y = 0; y < level.getSize().y; y++) {
+			sf::Color color = level.getPixel(x, y);
+			int t = x * 500;
+			if (color == sf::Color(64, 64, 64)) {
+				createWall(t, y*32);
+			}//and more...
+		}
+	}
 }
