@@ -8,7 +8,13 @@
 
 PongBehaviour::PongBehaviour(ResourceManager<sf::Texture, std::string>* rm)
 {
-	resourceManager = *rm;
+	resourceManager = rm;
+	speed = 0.2;
+	setVelocity(sfld::Vector2f(0, speed));
+
+	// initialise sprite
+	paintSprite();
+	sprite.setOrigin(16, 16);
 }
 
 
@@ -35,12 +41,12 @@ void PongBehaviour::update(int frame_time)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		setVelocity(sfld::Vector2f(0.0, 0.0));
+		setVelocity(sfld::Vector2f(0, speed));
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		setVelocity(sfld::Vector2f(0.0, 0.0));
+		setVelocity(sfld::Vector2f(0.0, -speed));
 	}
 }
 
@@ -52,4 +58,9 @@ void PongBehaviour::render(sf::RenderTarget* target)
 sf::Sprite* PongBehaviour::getSprite()
 {
 	return &sprite;
+}
+
+void PongBehaviour::paintSprite()
+{
+	sprite.setTexture(resourceManager->get("pong"));
 }
