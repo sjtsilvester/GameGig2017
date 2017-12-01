@@ -11,7 +11,7 @@ BulletBehaviour::BulletBehaviour(ResourceManager<sf::Texture, std::string>* rm)
 
 	// initialise sprite 1024 x 768
 	paintSprite();
-	sprite.setOrigin(512, 384);
+	sprite.setOrigin(-512, -64);
 }
 
 
@@ -22,9 +22,7 @@ BulletBehaviour::~BulletBehaviour()
 void BulletBehaviour::collided(Entity* other, MTV v)
 {
 	if (other->getType() == "pong")
-	{
-		setVelocity(sfld::Vector2f(0.5, 0.0));
-	}
+		;
 	else
 	{
 		other->takeDamage(10);
@@ -34,6 +32,7 @@ void BulletBehaviour::collided(Entity* other, MTV v)
 
 void BulletBehaviour::update(int frame_time)
 {
+
 }
 
 void BulletBehaviour::render(sf::RenderTarget* target)
@@ -53,9 +52,4 @@ void BulletBehaviour::paintSprite()
 
 void BulletBehaviour::sfmlEvent(sf::Event e)
 {
-}
-
-void BulletBehaviour::setVelocity(sfld::Vector2f velo)
-{
-	velocity_ = velo;
 }
