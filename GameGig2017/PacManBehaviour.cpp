@@ -14,15 +14,13 @@ PacManBehaviour::PacManBehaviour(ResourceManager<sf::Texture, std::string>* rm) 
 	//initialise sprite
 	paintSprite();
 	flash = 0;
+	sprite.setOrigin(16, 16);
 }
 
 void PacManBehaviour::sfmlEvent(sf::Event evt) {}
 
 void PacManBehaviour::collided(Entity* other, MTV v){
-	if (other->getType() == "wall"){
-		setVelocity(sfld::Vector2f(0.0,0.0));
-	}
-	else if (other->getType() == "normal ghost") {
+	if (other->getType() == "normal ghost") {
 		takeDamage(10);
 		flash = 1;
 	}
