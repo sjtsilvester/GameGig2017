@@ -19,7 +19,8 @@ public:
 		BEHAVIOUR_MARIO,
 		BEHAVIOUR_PONG,
 		BEHAVIOUR_BULLET,
-		BEHAVIOUR_SHOOTER
+		BEHAVIOUR_SHOOTER,
+		BEHAVIOUR_FOOD
 	};
 
 	virtual void collided(Entity* other, MTV v) = 0;

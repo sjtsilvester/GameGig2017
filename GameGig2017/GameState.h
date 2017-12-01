@@ -28,6 +28,10 @@ private:
 
 	void createWall(int time, int y);
 	void createShooter(int time, int y);
+	void createGhost(int time, int y);
+	void createGoomba(int time, int y);
+	void createPacfood(int time, int y);
+
 
 	ResourceManager<sf::Texture, std::string> rm_;
 

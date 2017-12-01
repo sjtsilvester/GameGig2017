@@ -5,8 +5,9 @@
 #include "Entity.h"
 
 //You will want to save rm to a private variable. To get a texture: rm->get("texture name"); We will load textures later.
-PacFoodBehaviour::PacFoodBehaviour(ResourceManager<sf::Texture, std::string>* rm) {
+PacFoodBehaviour::PacFoodBehaviour(ResourceManager<sf::Texture, std::string>* rm, Entity* player) {
 	resourceManager = rm;
+	player_ = player;
 	setVelocity(sfld::Vector2f(0, 0));
 
 	//initialise sprite
@@ -18,7 +19,7 @@ void PacFoodBehaviour::sfmlEvent(sf::Event evt) {
 }
 
 void PacFoodBehaviour::collided(Entity* other, MTV v) {
-	if (!(other->getType() == "pacman")) {
+	if (other->getType() != "pacman" && other == player_) {
 		other->takeDamage(10);
 	}
 }

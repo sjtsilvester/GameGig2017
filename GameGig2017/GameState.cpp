@@ -10,6 +10,9 @@
 #include "PongBehaviour.h"
 #include "BulletBehaviour.h"
 #include "ShooterBehaviour.h"
+#include "GhostBehaviour.h"
+#include "GoombaBehaviour.h"
+#include "PacFoodBehaviour.h"
 
 #include <iostream>
 #include <fstream>  
@@ -37,12 +40,16 @@ void GameState::sfmlEvent(sf::Event evt) {
 void GameState::start() {
 
 	rm_.setDirectory("media/images/");
-	rm_.load("demo", "demo.png");
+	rm_.load("mario", "mario.png");
 	rm_.load("wall", "wall.png");
 	rm_.load("pacman", "pacman.png");
 	rm_.load("pong", "pong.png");
-	rm_.load("shooter", "demo.png");
+	rm_.load("shooter", "shooter.png");
 	rm_.load("bullet", "bullet.png");
+	rm_.load("ghost", "ghost.png");
+	rm_.load("goomba", "goomba.png");
+	rm_.load("pacFood", "pacFood.png");
+
 
 
 	entity_manager_ = std::unique_ptr<EntityManager>(new EntityManager());
@@ -103,6 +110,51 @@ void GameState::createShooter(int t, int y) {
 	);
 }
 
+void GameState::createGhost(int t, int y) {
+	BehaviourMap* wall_map = new BehaviourMap();
+	wall_map->insert(std::make_pair(Behaviour::BEHAVIOUR_GHOST,
+		std::unique_ptr<Behaviour>(new GhostBehaviour(&rm_))));
+
+	world_manager_->addEntity(t, new Entity(
+		wall_map,
+		entity_manager_.get(),
+		sfld::Vector2f(0, 0),
+		Behaviour::BEHAVIOUR_GHOST,
+		Entity::DYNAMIC_MOVING,
+		true), y
+	);
+}
+
+void GameState::createGoomba(int t, int y) {
+	BehaviourMap* wall_map = new BehaviourMap();
+	wall_map->insert(std::make_pair(Behaviour::BEHAVIOUR_GOOMBA,
+		std::unique_ptr<Behaviour>(new GoombaBehaviour(&rm_))));
+
+	world_manager_->addEntity(t, new Entity(
+		wall_map,
+		entity_manager_.get(),
+		sfld::Vector2f(0, 0),
+		Behaviour::BEHAVIOUR_GOOMBA,
+		Entity::DYNAMIC_MOVING,
+		true), y
+	);
+}
+
+void GameState::createPacfood(int t, int y) {
+	BehaviourMap* wall_map = new BehaviourMap();
+	wall_map->insert(std::make_pair(Behaviour::BEHAVIOUR_FOOD,
+		std::unique_ptr<Behaviour>(new GoombaBehaviour(&rm_))));
+
+	world_manager_->addEntity(t, new Entity(
+		wall_map,
+		entity_manager_.get(),
+		sfld::Vector2f(0, 0),
+		Behaviour::BEHAVIOUR_FOOD,
+		Entity::DYNAMIC_MOVING,
+		true), y
+	);
+}
+
 
 void GameState::createBullet(sfld::Vector2f velocity, sfld::Vector2f position) {
 	BehaviourMap* bullet_map = new BehaviourMap();
@@ -144,7 +196,19 @@ void GameState::load(std::string texture) {
 			int t = x * 500;
 			if (color == sf::Color(64, 64, 64)) {
 				createWall(t, y*32);
-			}//and more...
+			}
+			else if(color == sf::Color(255, 0, 0)) {
+				createGhost(t, y * 32);
+			}
+			else if (color == sf::Color(255, 106, 0)) {
+				createGoomba(t, y * 32);
+			}
+			else if (color == sf::Color(255, 216, 0)) {
+				createShooter(t, y * 32);
+			}
+			else if (color == sf::Color(182, 255, 0)) {
+				createPacfood(t, y * 32);
+			}
 		}
 	}
 }

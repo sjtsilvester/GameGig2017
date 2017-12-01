@@ -74,14 +74,14 @@ void Entity::setBehaviour(Behaviour::BEHAVIOUR_TYPE type) {
 	else if (type == Behaviour::BEHAVIOUR_MARIO) {
 		type_ = "mario";
 	}
-	else if (type == Behaviour::BEHAVIOUR_PACMAN) {
-		type_ = "pacman";
-	}
 	else if (type == Behaviour::BEHAVIOUR_PONG) {
 		type_ = "pong";
 	}
 	else if (type == Behaviour::BEHAVIOUR_SHOOTER) {
 		type_ = "shooter";
+	}
+	else if (type == Behaviour::BEHAVIOUR_FOOD) {
+		type_ = "food";
 	}
 }
 

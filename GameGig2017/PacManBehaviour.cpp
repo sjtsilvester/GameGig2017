@@ -32,6 +32,9 @@ void PacManBehaviour::collided(Entity* other, MTV v){
 		takeDamage(10);
 		isFlashing = true;
 	}
+	else if (other->getType() == "food") {
+		other->takeDamage(1000);
+	}
 }
 
 void PacManBehaviour::update(int frame_time) {
